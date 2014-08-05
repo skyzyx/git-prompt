@@ -5,7 +5,7 @@ This is my prompt, which provides all sorts of useful information about the curr
 ## Dependencies
 
 * Bash 4.x is highly recommended. (OS X Mavericks only comes with Bash 3.x.)
-* GNU sed (as opposed to the other sed) is highly recommended.
+* GNU sed (aka `gsed`, as opposed to the other `sed`) is highly recommended.
 
 If you are running a modern version of OS X, you can install these via Homebrew or MacPorts.
 
