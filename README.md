@@ -14,7 +14,7 @@ If you are running a modern version of OS X, you can install these via Homebrew 
 Simply dropping these into your `profile.d` directory or loading them via `~/.profile` isn't enough. You must actually _turn it on_.
 
 ```bash
-export GIT_EXTENDED_PROMPT='true'
+export GIT_EXTENDED_PROMPT=true
 ```
 
 If you want to change the symbology, you can do so by tweaking the environment variables.
