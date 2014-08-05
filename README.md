@@ -38,3 +38,7 @@ If you're running OS X, check out my [Type-R Terminal style](https://github.com/
 Also, I'm a big fan of using [Meslo LG S](https://github.com/andreberg/Meslo-Font) 14pt for my Terminal. Give it a whirl!
 
 You can set them in the Terminal.app `Preferences pane → Startup`.
+
+## Great artists steal
+
+Portions of this code are from https://github.com/magicmonty/bash-git-prompt.
