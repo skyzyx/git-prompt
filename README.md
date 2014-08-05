@@ -9,6 +9,14 @@ This is my prompt, which provides all sorts of useful information about the curr
 
 If you are running a modern version of OS X, you can install these via Homebrew or MacPorts.
 
+## Enabling it
+
+Simply dropping these into your `profile.d` directory or loading them via `~/.profile` isn't enough. You must actually _turn it on_.
+
+```bash
+export GIT_EXTENDED_PROMPT='true'
+```
+
 ## Other stuff
 
 If you're running OS X, check out my [Type-R Terminal style](https://github.com/skyzyx/terminal-style).
