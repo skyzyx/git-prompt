@@ -1,0 +1,165 @@
+#! /usr/bin/env bash
+
+# See colors.sh for color-related variables
+
+export GIT_EXTENDED_PROMPT_HASH=":"
+export GIT_EXTENDED_PROMPT_CONFLICTED="\xC3\x97"
+export GIT_EXTENDED_PROMPT_STAGED="\xE2\x88\x86"
+export GIT_EXTENDED_PROMPT_CHANGED="*"
+export GIT_EXTENDED_PROMPT_UNTRACKED="!"
+export GIT_EXTENDED_PROMPT_AHEAD="+"
+export GIT_EXTENDED_PROMPT_BEHIND="-"
+export GIT_EXTENDED_PROMPT_OK="\xE2\x9c\x93"
+export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
+
+# Lookup the current git branch, if any
+__wp_git_branch_lookup() {
+
+  # Do we have GNU Sed installed?
+  if [[ ! -z $(which gsed 2>/dev/null) ]]; then
+    _sed=gsed
+  elif [[ ! -z $(which sed 2>/dev/null) ]]; then
+    _sed=sed
+  else
+    return;
+  fi
+
+  # Are we in a Git repo?
+  git log -n 1 >/dev/null 2>&1
+
+  if [[ $? = 0 ]]; then
+
+    # Start - https://github.com/magicmonty/bash-git-prompt/blob/master/gitstatus.sh
+    gitsym=`git symbolic-ref HEAD 2>/dev/null`
+    branch="${gitsym##refs/heads/}"
+    remote=
+
+    if [[ -z "$branch" ]]; then
+      tag=`git describe --exact-match 2>/dev/null`
+      if [[ -n "$tag" ]]; then
+        branch="$tag"
+      else
+        branch="$GIT_EXTENDED_PROMPT_HASH`git rev-parse --short HEAD`"
+      fi
+    else
+      remote_name=`git config branch.${branch}.remote`
+
+      if [[ -n "$remote_name" ]]; then
+        merge_name=`git config branch.${branch}.merge`
+      else
+        remote_name='origin'
+        merge_name="refs/heads/${branch}"
+      fi
+
+      if [[ "$remote_name" == '.' ]]; then
+        remote_ref="$merge_name"
+      else
+        remote_ref="refs/remotes/$remote_name/${merge_name##refs/heads/}"
+      fi
+
+      # get the revision list, and count the leading "<" and ">"
+      revgit=`git rev-list --left-right ${remote_ref}...HEAD`
+      num_revs=`__wp_all_lines "$revgit"`
+      num_ahead=`__wp_count_lines "$revgit" "^>"`
+      num_behind=$(( num_revs - num_ahead ))
+      if (( num_behind > 0 )) ; then
+        remote="${remote}${symbols_behind}${num_behind}"
+      fi
+      if (( num_ahead > 0 )) ; then
+        remote="${remote}${symbols_ahead}${num_ahead}"
+      fi
+    fi
+    if [[ -z "$remote" ]] ; then
+      remote='.'
+    fi
+    # End - https://github.com/magicmonty/bash-git-prompt/blob/master/gitstatus.sh
+
+    #----#
+
+    if [[ $GIT_EXTENDED_PROMPT = 'true' ]]; then
+      status=$(git status -s -uall)
+
+      # Count commits ahead
+      if [[ $num_ahead -ne 0 ]]; then
+        num_ahead=" $GIT_EXTENDED_PROMPT_AHEAD$num_ahead"
+      else
+        num_ahead=""
+      fi
+
+      # Count commits behind
+      if [[ $num_behind -ne 0 ]]; then
+        num_behind=" $GIT_EXTENDED_PROMPT_BEHIND$num_behind"
+      else
+        num_behind=""
+      fi
+
+      # Count conflicted files
+      conflicted=$(echo "$status" | $_sed -nr '/^UU/p' | wc -l | tr -d "\n" | sed 's/^ *//')
+      if [[ $conflicted -ne 0 ]]; then
+        conflicted=" $conflicted$GIT_EXTENDED_PROMPT_CONFLICTED"
+      else
+        conflicted=""
+      fi
+
+      # Count staged files
+      staged=$(echo "$status" | $_sed -nr '/^[A-Z]/p' | wc -l | tr -d "\n" | sed 's/^ *//')
+      if [[ $staged -ne 0 ]]; then
+        staged=" $staged$GIT_EXTENDED_PROMPT_STAGED"
+      else
+        staged=""
+      fi
+
+      # Count changed files
+      changed=$(echo "$status" | $_sed -nr '/^\s/p' | wc -l | tr -d "\n" | sed 's/^ *//')
+      if [[ $changed -ne 0 ]]; then
+        changed=" $changed$GIT_EXTENDED_PROMPT_CHANGED"
+      else
+        changed=""
+      fi
+
+      # Count untracked files
+      untracked=$(echo "$status" | $_sed -nr '/^\?/p' | wc -l | tr -d "\n" | sed 's/^ *//')
+      if [[ $untracked -ne 0 ]]; then
+        untracked=" $untracked$GIT_EXTENDED_PROMPT_UNTRACKED"
+      else
+        untracked=""
+      fi
+
+      echo -ne " ($branch$num_ahead$num_behind$conflicted$staged$changed$untracked)";
+    else
+      echo -ne " ($branch)";
+    fi
+  else
+    echo -ne "";
+  fi
+}
+
+# Helper functions
+__wp_count_lines() {
+  echo "$1" | egrep -c "^$2";
+}
+
+__wp_all_lines() {
+  echo "$1" | grep -v "^$" | wc -l;
+}
+
+# Did the last command finish successfully?
+__wp_pass_fail() {
+  if [[ $? = 0 ]]; then
+    return 0;
+  else
+    return 1;
+  fi
+}
+
+__wp_set_prompt_command() {
+  # Build prompt in reverse so that we can properly capture the last exit code
+  export PS1="\[$fg_bwhite\]`if [ $? = 0 ]; then echo -e \"\[$bg_green\] $GIT_EXTENDED_PROMPT_OK \"; else echo -e \"\[$bg_red\] $GIT_EXTENDED_PROMPT_NOK \"; fi`\[$reset\] "
+  export PS1="\[$fg_byellow\]\$(__wp_git_branch_lookup)\[$reset\] $PS1" # Git status
+  export PS1="[\[$fg_bgreen\]\u@\h\[$reset\]: \[$fg_white\]\[$bg_blue\] \w \[$reset\]]$PS1" # User, hostname, current path
+}
+
+# Always run on new prompt
+export PROMPT_COMMAND="__wp_set_prompt_command";
+
+shopt -s checkwinsize
