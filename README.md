@@ -17,6 +17,20 @@ Simply dropping these into your `profile.d` directory or loading them via `~/.pr
 export GIT_EXTENDED_PROMPT='true'
 ```
 
+If you want to change the symbology, you can do so by tweaking the environment variables.
+
+```bash
+export GIT_EXTENDED_PROMPT_HASH=":"
+export GIT_EXTENDED_PROMPT_CONFLICTED="\xC3\x97"
+export GIT_EXTENDED_PROMPT_STAGED="\xE2\x88\x86"
+export GIT_EXTENDED_PROMPT_CHANGED="*"
+export GIT_EXTENDED_PROMPT_UNTRACKED="!"
+export GIT_EXTENDED_PROMPT_AHEAD="+"
+export GIT_EXTENDED_PROMPT_BEHIND="-"
+export GIT_EXTENDED_PROMPT_OK="\xE2\x9c\x93"
+export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
+```
+
 ## Other stuff
 
 If you're running OS X, check out my [Type-R Terminal style](https://github.com/skyzyx/terminal-style).
