@@ -48,6 +48,10 @@ export GIT_EXTENDED_PROMPT_OK="\xE2\x9c\x93"
 export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
 ```
 
+## Known Issues
+
+See the _Issues_ tab in GitHub.
+
 ## Other stuff
 
 If you're running OS X, check out my [Type-R Terminal style](https://github.com/skyzyx/terminal-style).
