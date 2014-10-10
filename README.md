@@ -4,10 +4,27 @@ This is my prompt, which provides all sorts of useful information about the curr
 
 ## Dependencies
 
+* GNU sed (aka `gsed`, as opposed to the other `sed`) is **required**.
+  ```bash
+  # Homebrew
+  brew install gnu-sed
+  
+  # MacPorts
+  port install gsed
+  ```
 * Bash 4.x is highly recommended. (OS X Mavericks only comes with Bash 3.x.)
-* GNU sed (aka `gsed`, as opposed to the other `sed`) is highly recommended.
+  ```bash
+  # Homebrew
+  brew install bash
+  
+  # MacPorts
+  port install bash
+  ```
 
-If you are running a modern version of OS X, you can install these via Homebrew or MacPorts.
+In OS X, you can tell Terminal to use the new version of Bash by changing your preferences.
+```
+Preferences → General → Shells Open With
+```
 
 ## Enabling it
 
