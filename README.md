@@ -28,7 +28,7 @@ Preferences → General → Shells Open With
 
 ## Enabling it
 
-Simply dropping these into your `profile.d` directory or loading them via `~/.profile` isn't enough. You must actually _turn it on_.
+Simply dropping these into your `profile.d` directory or sourcing them via `~/.profile`, `~/.bash_profile` or `/etc/.bashrc` isn't enough. You must actually _turn it on_.
 
 ```bash
 export GIT_EXTENDED_PROMPT=true
