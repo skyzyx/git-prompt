@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# Author: Ryan Parman
+# License: MIT
+# Home: https://github.com/skyzyx/git-prompt
+
 # See colors.sh for color-related variables
 
 export GIT_EXTENDED_PROMPT_HASH=":"
