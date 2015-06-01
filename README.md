@@ -2,6 +2,27 @@
 
 This is my prompt, which provides all sorts of useful information about the current status of Git repositories. It is written in pure Bash.
 
+A plain-text version looks like this:
+
+```bash
+[ryanparman@rparman: ~/projects/my-project] 12:00:00 (master +1 -2 3× 4∆ 5* 6! <local>) ✓
+     ↑        ↑                ↑               ↑        ↑             ↑                 ↑
+   User     Machine           Path            Time    Branch [Git state information]  Last exit status
+```
+
+* `master` — The current branch that the repo is set to.
+* `+1` — The number of commits "ahead" this branch is compared to its remote copy. (Local has new commits)
+* `-2` — The number of commits "behind" this branch is compared to its remote copy. (Remote has new commits)
+* `3×` — The number of files that have merge conflicts.
+* `4∆` — The number of changed files that have been staged (a.k.a., "added") for commit.
+* `5*` — The number of changed files that have NOT been staged (a.k.a., "added") for commit.
+* `6!` — The number of new files that have not yet been added to the repository.
+* `<local>` — This is only shown if the branch has not yet been pushed to the remote. It is a local-only branch.
+
+**Last exit status:**
+* `✓` — The last command exited with NO errors.
+* `‼︎` — The last command exited with errors.
+
 ## Dependencies
 
 * GNU sed (aka `gsed`, as opposed to the other `sed`) is **required**.
