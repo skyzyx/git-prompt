@@ -34,6 +34,8 @@ Simply dropping these into your `profile.d` directory or sourcing them via `~/.p
 export GIT_EXTENDED_PROMPT=true
 ```
 
+## Customization
+### Symbology
 If you want to change the symbology, you can do so by tweaking the environment variables.
 
 ```bash
@@ -46,7 +48,18 @@ export GIT_EXTENDED_PROMPT_AHEAD="+"
 export GIT_EXTENDED_PROMPT_BEHIND="-"
 export GIT_EXTENDED_PROMPT_OK="\xE2\x9c\x93"
 export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
+export GIT_EXTENDED_PROMPT_NOREMOTE="<local>"
 ```
+
+### Color Scheme
+By default, the prompt uses a color scheme designed for a dark background. If you use a light background (such as the default in OS X Terminal), you can switch this to a more favorable palette by setting the following environment variable.
+
+```bash
+export PROMPT_COMMAND="__wp_set_prompt_command_for_basic";
+```
+
+### Freestyle
+If you'd like to completely customize the prompt, feel free to write your own function (using `__wp_set_prompt_command_for_basic` or `__wp_set_prompt_command_for_dark` as a template), and set _that_ function as the value for the `PROMPT_COMMAND` environment variable.
 
 ## Known Issues
 
