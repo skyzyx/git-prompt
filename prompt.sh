@@ -6,6 +6,7 @@
 
 # See colors.sh for color-related variables
 
+export GIT_EXTENDED_PROMPT_ENABLED=false
 export GIT_EXTENDED_PROMPT_HASH=":"
 export GIT_EXTENDED_PROMPT_CONFLICTED="\xC3\x97"
 export GIT_EXTENDED_PROMPT_STAGED="\xE2\x88\x86"
@@ -16,6 +17,9 @@ export GIT_EXTENDED_PROMPT_BEHIND="-"
 export GIT_EXTENDED_PROMPT_OK="\xE2\x9c\x93"
 export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
 export GIT_EXTENDED_PROMPT_NOREMOTE="<local>"
+
+# Make a backup
+export OLD_PS1=$PS1
 
 # Lookup the current git branch, if any
 __wp_git_branch_lookup() {
@@ -177,8 +181,28 @@ __wp_set_prompt_command_for_basic() {
   export PS1="[\[$fg_black\]\u@\h\[$reset\]: \[$fg_blue\]\w\[$reset\]] $PS1" # User, hostname, current path
 }
 
+__wp_set_prompt_command_for_nocolor() {
+  # Build prompt in reverse so that we can properly capture the last exit code
+  export PS1="`if [ $? = 0 ]; then echo -e \" $GIT_EXTENDED_PROMPT_OK \"; else echo -e \" $GIT_EXTENDED_PROMPT_NOK \"; fi` "
+  export PS1="\$(__wp_git_branch_lookup) $PS1" # Git status
+  export PS1="\T $PS1" # Time
+  export PS1="[\u@\h: \w] $PS1" # User, hostname, current path
+}
+
+__wp_set_prompt_noop() {
+  export PS1=$OLD_PS1
+}
+
 # Always run on new prompt
-export PROMPT_COMMAND="__wp_set_prompt_command_for_dark";
+if [ $GIT_EXTENDED_PROMPT_ENABLED == "dark" ]; then
+  export PROMPT_COMMAND="__wp_set_prompt_command_for_dark";
+elif [ $GIT_EXTENDED_PROMPT_ENABLED == "light" ]; then
+  export PROMPT_COMMAND="__wp_set_prompt_command_for_basic";
+elif [ $GIT_EXTENDED_PROMPT_ENABLED == "nocolor" ]; then
+  export PROMPT_COMMAND="__wp_set_prompt_command_for_nocolor";
+elif [ $GIT_EXTENDED_PROMPT_ENABLED == "false" ]; then
+  export PROMPT_COMMAND="__wp_set_prompt_noop";
+fi;
 
 #------------------------------------------------------------------------------#
 
