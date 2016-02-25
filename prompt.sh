@@ -18,7 +18,7 @@ export GIT_EXTENDED_PROMPT_NOK="\xE2\x80\xBC"
 export GIT_EXTENDED_PROMPT_NOREMOTE="<local>"
 
 # Make a backup
-export OLD_PS1=$PS1
+export OLD_PS1="[\u@\h \W]\$ "
 
 # Lookup the current git branch, if any
 __wp_git_branch_lookup() {
