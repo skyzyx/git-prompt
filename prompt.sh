@@ -6,7 +6,6 @@
 
 # See colors.sh for color-related variables
 
-export GIT_EXTENDED_PROMPT_ENABLED=false
 export GIT_EXTENDED_PROMPT_HASH=":"
 export GIT_EXTENDED_PROMPT_CONFLICTED="\xC3\x97"
 export GIT_EXTENDED_PROMPT_STAGED="\xE2\x88\x86"
@@ -194,13 +193,13 @@ __wp_set_prompt_noop() {
 }
 
 # Always run on new prompt
-if [ $GIT_EXTENDED_PROMPT_ENABLED == "dark" ]; then
+if [ $GIT_EXTENDED_PROMPT_COLOR == "dark" ]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_dark";
-elif [ $GIT_EXTENDED_PROMPT_ENABLED == "light" ]; then
+elif [ $GIT_EXTENDED_PROMPT_COLOR == "light" ]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_basic";
-elif [ $GIT_EXTENDED_PROMPT_ENABLED == "nocolor" ]; then
+elif [ $GIT_EXTENDED_PROMPT_COLOR == "nocolor" ]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_nocolor";
-elif [ $GIT_EXTENDED_PROMPT_ENABLED == "false" ]; then
+else
   export PROMPT_COMMAND="__wp_set_prompt_noop";
 fi;
 
