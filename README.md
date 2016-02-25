@@ -73,14 +73,18 @@ export GIT_EXTENDED_PROMPT_NOREMOTE="<local>"
 ```
 
 ### Color Scheme
-By default, the prompt uses a color scheme designed for a dark background. If you use a light background (such as the default in OS X Terminal), you can switch this to a more favorable palette by setting the following environment variable.
+By default, the prompt is not rewritten. You can change that by setting `dark` for dark-colored consoles, `light` for light-colored consoles, and `nocolor` for a formatted prompt with no color settings.
 
 ```bash
-export PROMPT_COMMAND="__wp_set_prompt_command_for_basic";
+export GIT_EXTENDED_PROMPT_COLOR="dark"
 ```
 
-### Freestyle
-If you'd like to completely customize the prompt, feel free to write your own function (using `__wp_set_prompt_command_for_basic` or `__wp_set_prompt_command_for_dark` as a template), and set _that_ function as the value for the `PROMPT_COMMAND` environment variable.
+### System Time
+You can add the system’s time to the prompt by enabling it.
+
+```bash
+export GIT_EXTENDED_PROMPT_TIME="true"
+```
 
 ## Known Issues
 

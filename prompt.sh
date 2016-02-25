@@ -168,7 +168,9 @@ __wp_set_prompt_command_for_dark() {
   # Build prompt in reverse so that we can properly capture the last exit code
   export PS1="\[$fg_bwhite\]`if [ $? = 0 ]; then echo -e \"\[$bg_green\] $GIT_EXTENDED_PROMPT_OK \"; else echo -e \"\[$bg_red\] $GIT_EXTENDED_PROMPT_NOK \"; fi`\[$reset\] "
   export PS1="\[$fg_byellow\]\$(__wp_git_branch_lookup)\[$reset\] $PS1" # Git status
-  export PS1="\[$fg_bblack\]\T\[$reset\] $PS1" # Time
+  if [[ $GIT_EXTENDED_PROMPT_TIME == "true" ]]; then
+    export PS1="\[$fg_bblack\]\T\[$reset\] $PS1" # Time
+  fi;
   export PS1="[\[$fg_bgreen\]\u@\h\[$reset\]: \[$fg_white\]\[$bg_blue\] \w \[$reset\]] $PS1" # User, hostname, current path
 }
 
@@ -176,15 +178,19 @@ __wp_set_prompt_command_for_basic() {
   # Build prompt in reverse so that we can properly capture the last exit code
   export PS1="\[$fg_bwhite\]`if [ $? = 0 ]; then echo -e \"\[$bg_green\] $GIT_EXTENDED_PROMPT_OK \"; else echo -e \"\[$bg_red\] $GIT_EXTENDED_PROMPT_NOK \"; fi`\[$reset\] "
   export PS1="\[$fg_green\]\$(__wp_git_branch_lookup)\[$reset\] $PS1" # Git status
-  export PS1="\[$fg_bblack\]\T\[$reset\] $PS1" # Time
+  if [[ $GIT_EXTENDED_PROMPT_TIME == "true" ]]; then
+    export PS1="\[$fg_bblack\]\T\[$reset\] $PS1" # Time
+  fi;
   export PS1="[\[$fg_black\]\u@\h\[$reset\]: \[$fg_blue\]\w\[$reset\]] $PS1" # User, hostname, current path
 }
 
 __wp_set_prompt_command_for_nocolor() {
   # Build prompt in reverse so that we can properly capture the last exit code
-  export PS1="`if [ $? = 0 ]; then echo -e \" $GIT_EXTENDED_PROMPT_OK \"; else echo -e \" $GIT_EXTENDED_PROMPT_NOK \"; fi` "
+  export PS1="`if [ $? = 0 ]; then echo -e \"$GIT_EXTENDED_PROMPT_OK\"; else echo -e \"$GIT_EXTENDED_PROMPT_NOK\"; fi` "
   export PS1="\$(__wp_git_branch_lookup) $PS1" # Git status
-  export PS1="\T $PS1" # Time
+  if [[ $GIT_EXTENDED_PROMPT_TIME == "true" ]]; then
+    export PS1="\T $PS1" # Time
+  fi;
   export PS1="[\u@\h: \w] $PS1" # User, hostname, current path
 }
 
@@ -193,11 +199,11 @@ __wp_set_prompt_noop() {
 }
 
 # Always run on new prompt
-if [ $GIT_EXTENDED_PROMPT_COLOR == "dark" ]; then
+if [[ $GIT_EXTENDED_PROMPT_COLOR == "dark" ]]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_dark";
-elif [ $GIT_EXTENDED_PROMPT_COLOR == "light" ]; then
+elif [[ $GIT_EXTENDED_PROMPT_COLOR == "light" ]]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_basic";
-elif [ $GIT_EXTENDED_PROMPT_COLOR == "nocolor" ]; then
+elif [[ $GIT_EXTENDED_PROMPT_COLOR == "nocolor" ]]; then
   export PROMPT_COMMAND="__wp_set_prompt_command_for_nocolor";
 else
   export PROMPT_COMMAND="__wp_set_prompt_noop";
